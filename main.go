@@ -1,8 +1,14 @@
 package main
 
 import (
+	"crypto/sha256"
+	"crypto/subtle"
 	"os"
+	"regexp"
+	"strings"
 	"time"
+
+	"github.com/gofiber/fiber/v2/middleware/keyauth"
 
 	"github.com/gofiber/contrib/fiberzerolog"
 	"github.com/gofiber/fiber/v2"
@@ -15,6 +21,11 @@ import (
 var (
 	mode   = os.Getenv("MODE")
 	logger zerolog.Logger
+
+	apiKey        = os.Getenv("QA_API_KEY")
+	protectedURLs = []*regexp.Regexp{
+		regexp.MustCompile("^/submit$"),
+	}
 )
 
 type submitRequest struct {
@@ -26,6 +37,27 @@ type submitResponse struct {
 	RequestID string `json:"request_id"`
 	Query     string `json:"query"`
 	Response  string `json:"response"`
+}
+
+func validateAPIKey(c *fiber.Ctx, key string) (bool, error) {
+	hashedAPIKey := sha256.Sum256([]byte(apiKey))
+	hashedKey := sha256.Sum256([]byte(key))
+
+	if subtle.ConstantTimeCompare(hashedAPIKey[:], hashedKey[:]) == 1 {
+		return true, nil
+	}
+	return false, keyauth.ErrMissingOrMalformedAPIKey
+}
+
+func authFilter(c *fiber.Ctx) bool {
+	originalURL := strings.ToLower(c.OriginalURL())
+
+	for _, pattern := range protectedURLs {
+		if pattern.MatchString(originalURL) {
+			return false
+		}
+	}
+	return true
 }
 
 func main() {
@@ -57,6 +89,13 @@ func main() {
 	app.Use(limiter.New(limiter.Config{
 		Expiration: 1 * time.Minute,
 		Max:        10,
+	}))
+
+	// auth
+	app.Use(keyauth.New(keyauth.Config{
+		Next:      authFilter,
+		KeyLookup: "cookie:access_token",
+		Validator: validateAPIKey,
 	}))
 
 	// routes
