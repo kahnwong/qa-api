@@ -17,6 +17,11 @@ var (
 	logger zerolog.Logger
 )
 
+type submitRequest struct {
+	RequestID string `json:"request_id"`
+	Query     string `json:"query"`
+}
+
 type submitResponse struct {
 	RequestID string `json:"request_id"`
 	Query     string `json:"query"`
@@ -60,11 +65,20 @@ func main() {
 	})
 
 	// --- main --- //
-	app.Get("/submit", func(c *fiber.Ctx) error {
-		response := submit("Who are you")
+	app.Post("/submit", func(c *fiber.Ctx) error {
+		// parse payload
+		r := new(submitRequest)
+		if err := c.BodyParser(r); err != nil {
+			return err
+		}
+
+		// main
+		response := submit(r.Query)
+
+		// return
 		return c.JSON(submitResponse{
-			RequestID: "Foo",
-			Query:     "Who are you",
+			RequestID: r.RequestID,
+			Query:     r.Query,
 			Response:  response,
 		})
 	})
