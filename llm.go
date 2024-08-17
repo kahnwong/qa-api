@@ -25,6 +25,8 @@ func submit(content string) string {
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-1.5-flash")
+	model.SetMaxOutputTokens(300)
+
 	resp, err := model.GenerateContent(ctx, genai.Text(prompt))
 	if err != nil {
 		log.Error().Err(err).Msg("Error generating response")

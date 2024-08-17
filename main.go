@@ -114,6 +114,12 @@ func main() {
 		// main
 		response := submit(r.Query)
 
+		log.Info().
+			Str("request_id", r.RequestID).
+			Str("query", r.Query).
+			Str("response", response).
+			Msg("response created")
+
 		// return
 		return c.JSON(submitResponse{
 			RequestID: r.RequestID,
