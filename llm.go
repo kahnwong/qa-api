@@ -42,8 +42,30 @@ func llmCall(prompt string) string {
 	return strings.TrimSpace(string(response))
 }
 
-func submit(content string) string {
-	prompt := fmt.Sprintf("Answer following question: %s. Please respond in Thai", content)
+func verify(question string, answer string) bool {
+	prompt := fmt.Sprintf("Your role is to verify that the following text is a question related to data engineering: %s. Please only answer with only True or False", question)
+	verifyAnswer := llmCall(prompt)
 
-	return llmCall(prompt)
+	var response bool
+	if verifyAnswer == "True" {
+		response = true
+	} else {
+		response = false
+	}
+
+	return response
+}
+
+func submit(question string) string {
+	prompt := fmt.Sprintf("Answer following question about data engineering: %s. Please respond in Thai", question)
+	answer := llmCall(prompt)
+
+	isLegit := verify(question, answer)
+	log.Info().Msgf("Answer is %t", isLegit)
+
+	if isLegit {
+		return answer
+	} else {
+		return ""
+	}
 }
