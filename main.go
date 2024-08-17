@@ -100,7 +100,7 @@ func main() {
 
 	// routes
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Welcome to qa-api api")
+		return c.SendString("Welcome to qa api")
 	})
 
 	// --- main --- //
