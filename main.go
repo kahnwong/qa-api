@@ -17,6 +17,12 @@ var (
 	logger zerolog.Logger
 )
 
+type submitResponse struct {
+	RequestID string `json:"request_id"`
+	Query     string `json:"query"`
+	Response  string `json:"response"`
+}
+
 func main() {
 	// entrypoint
 	listenAddress := ""
@@ -55,7 +61,12 @@ func main() {
 
 	// --- main --- //
 	app.Get("/submit", func(c *fiber.Ctx) error {
-		return c.SendString("Foo")
+		response := submit("Who are you")
+		return c.JSON(submitResponse{
+			RequestID: "Foo",
+			Query:     "Who are you",
+			Response:  response,
+		})
 	})
 
 	// error handling
