@@ -85,10 +85,10 @@ func main() {
 		Logger: &logger,
 	}))
 
-	// 10 requests per 1 minute max
+	// 5 requests per 1 minute max
 	app.Use(limiter.New(limiter.Config{
 		Expiration: 1 * time.Minute,
-		Max:        10,
+		Max:        5,
 	}))
 
 	// auth
