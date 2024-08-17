@@ -14,9 +14,7 @@ import (
 
 var GoogleAIApiKey = os.Getenv("GOOGLE_AI_API_KEY")
 
-func submit(content string) string {
-	prompt := fmt.Sprintf("Answer following question: %s. Please respond in Thai", content)
-
+func llmCall(prompt string) string {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(GoogleAIApiKey))
 	if err != nil {
@@ -42,4 +40,10 @@ func submit(content string) string {
 	}
 
 	return strings.TrimSpace(string(response))
+}
+
+func submit(content string) string {
+	prompt := fmt.Sprintf("Answer following question: %s. Please respond in Thai", content)
+
+	return llmCall(prompt)
 }
