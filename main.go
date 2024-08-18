@@ -8,10 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gofiber/fiber/v2/middleware/keyauth"
-
 	"github.com/gofiber/contrib/fiberzerolog"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/keyauth"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/rs/zerolog"
@@ -86,7 +85,7 @@ func main() {
 	}))
 
 	// 5 requests per 1 minute max
-	app.Use(limiter.New(limiter.Config{
+	app.Use("/submit", limiter.New(limiter.Config{
 		Expiration: 1 * time.Minute,
 		Max:        5,
 	}))
