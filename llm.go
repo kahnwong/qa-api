@@ -23,7 +23,7 @@ func llmCall(prompt string) string {
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-1.5-flash")
-	model.SetMaxOutputTokens(400)
+	model.SetMaxOutputTokens(1024)
 
 	resp, err := model.GenerateContent(ctx, genai.Text(prompt))
 	if err != nil {
@@ -57,7 +57,7 @@ func verify(question string, answer string) bool {
 }
 
 func submit(question string) string {
-	prompt := fmt.Sprintf("Answer following question about data engineering: %s. Please respond in Thai", question)
+	prompt := fmt.Sprintf("Answer following question about data engineering: %s. Answer should be within 4 paragraphs. Please respond in Thai", question)
 	answer := llmCall(prompt)
 
 	isLegit := verify(question, answer)
