@@ -66,6 +66,6 @@ func submit(question string) string {
 	if isLegit {
 		return answer
 	} else {
-		return ""
+		return "Error: question should be about data engineering or related topics."
 	}
 }
