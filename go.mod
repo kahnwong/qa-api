@@ -5,7 +5,7 @@ go 1.23
 require (
 	github.com/gofiber/contrib/fiberzerolog v1.0.2
 	github.com/gofiber/fiber/v2 v2.52.5
-	github.com/google/generative-ai-go v0.17.0
+	github.com/google/generative-ai-go v0.18.0
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.33.0
 	google.golang.org/api v0.196.0
