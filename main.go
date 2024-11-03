@@ -12,7 +12,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/keyauth"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
+	"github.com/gofiber/swagger"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/kahnwong/qa-api/controller"
+	_ "github.com/kahnwong/qa-api/docs"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -26,17 +29,6 @@ var (
 		regexp.MustCompile("^/submit$"),
 	}
 )
-
-type submitRequest struct {
-	RequestID string `json:"request_id"`
-	Query     string `json:"query"`
-}
-
-type submitResponse struct {
-	RequestID string `json:"request_id"`
-	Query     string `json:"query"`
-	Response  string `json:"response"`
-}
 
 func validateAPIKey(c *fiber.Ctx, key string) (bool, error) {
 	hashedAPIKey := sha256.Sum256([]byte(apiKey))
@@ -59,6 +51,13 @@ func authFilter(c *fiber.Ctx) bool {
 	return true
 }
 
+// @title QA API
+// @version 1.0
+// @contact.name Karn Wong
+// @contact.email karn@karnwong.me
+// @license.name MIT
+// @host localhost:3000
+// @BasePath /
 func main() {
 	// entrypoint
 	listenAddress := ""
@@ -84,6 +83,8 @@ func main() {
 		Logger: &logger,
 	}))
 
+	app.Get("/swagger/*", swagger.HandlerDefault)
+
 	// 5 requests per 1 minute max
 	app.Use("/submit", limiter.New(limiter.Config{
 		Expiration: 1 * time.Minute,
@@ -97,35 +98,10 @@ func main() {
 		Validator: validateAPIKey,
 	}))
 
-	// routes
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Welcome to qa api")
-	})
+	app.Get("/", controller.RootController)
 
 	// --- main --- //
-	app.Post("/submit", func(c *fiber.Ctx) error {
-		// parse payload
-		r := new(submitRequest)
-		if err := c.BodyParser(r); err != nil {
-			return err
-		}
-
-		// main
-		response := submit(r.Query)
-
-		log.Info().
-			Str("request_id", r.RequestID).
-			Str("query", r.Query).
-			Str("response", response).
-			Msg("response created")
-
-		// return
-		return c.JSON(submitResponse{
-			RequestID: r.RequestID,
-			Query:     r.Query,
-			Response:  response,
-		})
-	})
+	app.Post("/submit", controller.SubmitController)
 
 	// error handling
 	if err := app.Listen(listenAddress); err != nil {

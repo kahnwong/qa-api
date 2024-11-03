@@ -1,0 +1,94 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "QA API",
+        "contact": {
+            "name": "Karn Wong",
+            "email": "karn@karnwong.me"
+        },
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "summary": "Display welcome message.",
+                "responses": {
+                    "200": {
+                        "description": "Welcome to qa api",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/submit": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Submit question to LLM.",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.submitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.submitResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.submitRequest": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string"
+                },
+                "request_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.submitResponse": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string"
+                },
+                "request_id": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

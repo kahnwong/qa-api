@@ -1,0 +1,60 @@
+basePath: /
+definitions:
+  controller.submitRequest:
+    properties:
+      query:
+        type: string
+      request_id:
+        type: string
+    type: object
+  controller.submitResponse:
+    properties:
+      query:
+        type: string
+      request_id:
+        type: string
+      response:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: karn@karnwong.me
+    name: Karn Wong
+  license:
+    name: MIT
+  title: QA API
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+        - '*/*'
+      produces:
+        - text/plain
+      responses:
+        "200":
+          description: Welcome to qa api
+          schema:
+            type: string
+      summary: Display welcome message.
+  /submit:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - description: query params
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/controller.submitRequest'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.submitResponse'
+      summary: Submit question to LLM.
+swagger: "2.0"
