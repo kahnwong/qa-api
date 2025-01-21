@@ -29,7 +29,7 @@ func llmCall(prompt string) string {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(GoogleAIApiKey))
 	if err != nil {
-		log.Fatal().Err(err).Msg("Failed to create GOOGLE AI client")
+		log.Fatal().Msg("Failed to create GOOGLE AI client")
 	}
 	defer client.Close()
 
@@ -38,7 +38,7 @@ func llmCall(prompt string) string {
 
 	resp, err := model.GenerateContent(ctx, genai.Text(prompt))
 	if err != nil {
-		log.Error().Err(err).Msg("Error generating response")
+		log.Error().Msg("Error generating response")
 	}
 
 	var response string

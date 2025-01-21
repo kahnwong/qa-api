@@ -105,6 +105,6 @@ func main() {
 
 	// error handling
 	if err := app.Listen(listenAddress); err != nil {
-		logger.Fatal().Err(err).Msg("Fiber app error")
+		logger.Fatal().Msg("Fiber app error")
 	}
 }
