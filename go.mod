@@ -3,7 +3,7 @@ module github.com/kahnwong/qa-api
 go 1.23
 
 require (
-	github.com/gofiber/contrib/fiberzerolog v1.0.2
+	github.com/gofiber/contrib/fiberzerolog v1.0.3
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/gofiber/swagger v1.1.1
 	github.com/google/generative-ai-go v0.19.0
