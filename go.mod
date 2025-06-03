@@ -4,7 +4,7 @@ go 1.24.2
 
 require (
 	github.com/gofiber/contrib/fiberzerolog v1.0.3
-	github.com/gofiber/fiber/v2 v2.52.7
+	github.com/gofiber/fiber/v2 v2.52.8
 	github.com/gofiber/swagger v1.1.1
 	github.com/google/generative-ai-go v0.20.1
 	github.com/joho/godotenv v1.5.1
