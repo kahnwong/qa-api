@@ -9,7 +9,7 @@ require (
 	github.com/google/generative-ai-go v0.20.1
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.34.0
-	github.com/swaggo/swag v1.16.4
+	github.com/swaggo/swag v1.16.5
 	google.golang.org/api v0.240.0
 )
 
@@ -53,6 +53,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.36.0 // indirect
 	go.opentelemetry.io/otel/trace v1.36.0 // indirect
 	golang.org/x/crypto v0.39.0 // indirect
+	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.15.0 // indirect
