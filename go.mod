@@ -10,7 +10,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.34.0
 	github.com/swaggo/swag v1.16.5
-	google.golang.org/api v0.240.0
+	google.golang.org/api v0.242.0
 )
 
 require (
