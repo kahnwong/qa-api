@@ -1,6 +1,6 @@
 module github.com/kahnwong/qa-api
 
-go 1.24.2
+go 1.25
 
 require (
 	github.com/gofiber/contrib/fiberzerolog v1.0.3
